@@ -80,7 +80,7 @@ USE_OPENGL_RENDERER := true
 
 # Kernel
 BOARD_KERNEL_BASE := 0x80000000
-#BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 
+#BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 cma=32M@0-0xffffffff
 BOARD_KERNEL_CMDLINE += cnsscore.pcie_link_down_panic=1
 
@@ -94,6 +94,7 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CONFIG := griffin_defconfig
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8996
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-androidkernel-
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
@@ -103,7 +104,7 @@ TARGET_BOOTLOADER_BOARD_NAME := griffin
 TARGET_NO_RADIOIMAGE := true
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc/ #### THIS SEEMS WRONG
 TARGET_USES_64_BIT_BINDER := true
-#BOARD_USES_QC_TIME_SERVICES := true
+BOARD_USES_QC_TIME_SERVICES := true
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_griffin
@@ -149,8 +150,13 @@ TARGET_PROVIDES_KEYMASTER := true
 # Ril
 TARGET_RIL_VARIANT := caf
 
+# NFC
+TARGET_USES_NQ_NFC := true
+BOARD_NFC_CHIPSET := pn548
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 
 # Wifi
 BOARD_HAS_QCOM_WLAN              := true
@@ -165,6 +171,8 @@ TARGET_USES_WCNSS_MAC_ADDR_REV   := true
 WIFI_DRIVER_FW_PATH_STA          := "sta"
 WIFI_DRIVER_FW_PATH_AP           := "ap"
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
+WIFI_DRIVER_MODULE_PATH 		 := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_NAME			 := "wlan"
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
@@ -182,7 +190,7 @@ BOARD_QTI_CAMERA_32BIT_ONLY := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 TARGET_CAMERA_APP := Camera2
 
-# TWRP 
+# TWRP
 # RECOVERY_VARIANT := twrp
 # TW_THEME := portrait_hdpi
 # RECOVERY_SDCARD_ON_DATA := true
@@ -196,4 +204,15 @@ TARGET_CAMERA_APP := Camera2
 # TW_USE_TOOLBOX    := true
 
 # Sensors
-# USE_SENSOR_MULTI_HAL := true
+USE_SENSOR_MULTI_HAL := true
+
+# CMHW
+BOARD_USES_CYANOGEN_HARDWARE := true
+BOARD_HARDWARE_CLASS += hardware/cyanogen/cmhw
+
+# FM
+TARGET_QCOM_NO_FM_FIRMWARE := true
+
+# Radio
+BOARD_PROVIDES_LIBRIL := true
+BOARD_PROVIDES_RILD := true

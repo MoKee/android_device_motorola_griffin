@@ -48,19 +48,62 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
+	libnfc \
+	libnfc_jni \
+	nfc_nci.pn54x.default \
     com.android.nfc_extras \
     com.nxp.nfc.nq \
+    libnqnfc-nci \
+	libp61-jcop-kit \
     nfc_nci.nqx.default \
     NQNfcNci \
+	NfcNci \
     nqnfcee_access.xml \
     nqnfcse_access.xml \
     Tag
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+    $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
+	$(LOCAL_PATH)/configs/nfc/libnfc-nxp_ds.conf:system/etc/libnfc-nxp_ds.conf
+
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/fpc1020.kl:system/usr/keylayout/fpc1020.kl \
     $(LOCAL_PATH)/keylayout/synaptics_dsx.kl:system/usr/keylayout/synaptics.kl
 
+
+# IRSC
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config \
+		$(LOCAL_PATH)/configs/dsi_config.xml:system/etc/data/dsi_config.xml \
+		$(LOCAL_PATH)/configs/qmi_config.xml:system/etc/data/qmi_config.xml \
+		$(LOCAL_PATH)/configs/netmgr_config.xml:system/etc/data/netmgr_config.xml
+
+
 # Memory
 $(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-hwui-memory.mk)
+
+#GreyBus
+PRODUCT_PACKAGES += \
+    greybus
+
+#V4L2_HAL
+PRODUCT_PACKAGES += \
+    v4l2_hal
+
+# CMActions
+PRODUCT_PACKAGES += \
+    CMActions
+
+# DRM
+PRODUCT_PACKAGES += \
+	libprotobuf-cpp-lite
+
+# Ebtables
+PRODUCT_PACKAGES += \
+   ebtables \
+   ethertypes \
+   libebtc
