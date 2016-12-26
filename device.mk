@@ -38,8 +38,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Camera
 PRODUCT_PACKAGES += \
     Camera2 \
+	libbson \
     libshim_camera \
     libcamera_shim
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/camera/imx338_chromatix.xml:system/etc/camera/imx338_chromatix.xml \
+    $(LOCAL_PATH)/configs/camera/mot_imx214_chromatix.xml:system/etc/camera/mot_imx214_chromatix.xml \
+	$(LOCAL_PATH)/configs/camera/ov5693_chromatix.xml:system/etc/camera/ov5693_chromatix.xml \
+	$(LOCAL_PATH)/configs/camera/msm8996_mot_camera.xml:system/etc/camera/msm8996_mot_camera.xml
+
 
 # IPv6
 PRODUCT_PACKAGES += \
@@ -48,25 +56,18 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
-	libnfc \
-	libnfc_jni \
+	libnfc-nci \
+	libnfc_nci_jni \
+	com.android.nfc_extras \
 	nfc_nci.pn54x.default \
-    com.android.nfc_extras \
-    com.nxp.nfc.nq \
-    libnqnfc-nci \
-	libp61-jcop-kit \
-    nfc_nci.nqx.default \
-    NQNfcNci \
 	NfcNci \
-    nqnfcee_access.xml \
-    nqnfcse_access.xml \
-    Tag
+	nqnfcee_access.xml \
+	nqnfcse_access.xml \
+	Tag
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
-    $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
-	$(LOCAL_PATH)/configs/nfc/libnfc-nxp_ds.conf:system/etc/libnfc-nxp_ds.conf
-
+    $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
