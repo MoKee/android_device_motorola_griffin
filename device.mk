@@ -34,58 +34,35 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.product.first_api_level=23
 
+# Memory
+$(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-hwui-memory.mk)
+
 ## UNTESTED ITEMS BELOW
 # Camera
 PRODUCT_PACKAGES += \
     Camera2 \
-	libbson \
+    libbson \
     libshim_camera \
     libcamera_shim
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/camera/imx338_chromatix.xml:system/etc/camera/imx338_chromatix.xml \
     $(LOCAL_PATH)/configs/camera/mot_imx214_chromatix.xml:system/etc/camera/mot_imx214_chromatix.xml \
-	$(LOCAL_PATH)/configs/camera/ov5693_chromatix.xml:system/etc/camera/ov5693_chromatix.xml \
-	$(LOCAL_PATH)/configs/camera/msm8996_mot_camera.xml:system/etc/camera/msm8996_mot_camera.xml
-
-
-# IPv6
-PRODUCT_PACKAGES += \
-    ebtables \
-    ethertypes
-
-# NFC
-PRODUCT_PACKAGES += \
-	libnfc-nci \
-	libnfc_nci_jni \
-	com.android.nfc_extras \
-	nfc_nci.pn54x.default \
-	NfcNci \
-	nqnfcee_access.xml \
-	nqnfcse_access.xml \
-	Tag
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
-    $(LOCAL_PATH)/configs/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf
+    $(LOCAL_PATH)/configs/camera/ov5693_chromatix.xml:system/etc/camera/ov5693_chromatix.xml \
+    $(LOCAL_PATH)/configs/camera/msm8996_mot_camera.xml:system/etc/camera/msm8996_mot_camera.xml
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/fpc1020.kl:system/usr/keylayout/fpc1020.kl \
     $(LOCAL_PATH)/keylayout/synaptics_dsx.kl:system/usr/keylayout/synaptics.kl
 
-
 # IRSC
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config \
-		$(LOCAL_PATH)/configs/dsi_config.xml:system/etc/data/dsi_config.xml \
-		$(LOCAL_PATH)/configs/qmi_config.xml:system/etc/data/qmi_config.xml \
-		$(LOCAL_PATH)/configs/netmgr_config.xml:system/etc/data/netmgr_config.xml
-
-
-# Memory
-$(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-dalvik-heap.mk)
-$(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-hwui-memory.mk)
+    $(LOCAL_PATH)/configs/dsi_config.xml:system/etc/data/dsi_config.xml \
+    $(LOCAL_PATH)/configs/qmi_config.xml:system/etc/data/qmi_config.xml \
+    $(LOCAL_PATH)/configs/netmgr_config.xml:system/etc/data/netmgr_config.xml
 
 #GreyBus
 PRODUCT_PACKAGES += \
@@ -101,10 +78,4 @@ PRODUCT_PACKAGES += \
 
 # DRM
 PRODUCT_PACKAGES += \
-	libprotobuf-cpp-lite
-
-# Ebtables
-PRODUCT_PACKAGES += \
-   ebtables \
-   ethertypes \
-   libebtc
+    libprotobuf-cpp-lite

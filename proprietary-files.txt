@@ -86,6 +86,8 @@ vendor/lib64/libadiertac.so
 vendor/lib/libaudcal.so
 vendor/lib64/libaudcal.so
 lib/soundfx/libmmieffectswrapper.so
+lib/soundfx/libqcomvoiceprocessing.so
+lib64/soundfx/libqcomvoiceprocessing.so
 
 etc/acdbdata/sheridan/General_cal.acdb
 etc/acdbdata/sheridan/Bluetooth_cal.acdb
