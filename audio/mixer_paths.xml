@@ -1034,12 +1034,12 @@
 
 	<path name="voice-speaker">
 		<!-- Audio Mode first before powering up DSP4 from "speaker" -->
-		<ctl name="DSP4 Audio Mode" value="VOICE" />
+		<!-- <ctl name="DSP4 Audio Mode" value="VOICE" /> -->
 		<path name="speaker" />
 	</path>
 
 	<path name="voice-speaker-mic">
-		<path name="speaker-mic" />
+		<path name="mic4" />
 	</path>
 
 	<path name="voice-headphones">
