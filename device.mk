@@ -38,35 +38,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 $(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxxhdpi-4096-hwui-memory.mk)
 
-## UNTESTED ITEMS BELOW
-# Camera
-PRODUCT_PACKAGES += \
-    Camera2 \
-    libbson \
-    libshim_camera \
-    libcamera_shim
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/camera/imx338_chromatix.xml:system/etc/camera/imx338_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/mot_imx214_chromatix.xml:system/etc/camera/mot_imx214_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/ov5693_chromatix.xml:system/etc/camera/ov5693_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/msm8996_mot_camera.xml:system/etc/camera/msm8996_mot_camera.xml
-
-# Keylayouts
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/keylayout/fpc1020.kl:system/usr/keylayout/fpc1020.kl \
-    $(LOCAL_PATH)/keylayout/synaptics_dsx.kl:system/usr/keylayout/synaptics.kl
-
 # IRSC
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config \
-    $(LOCAL_PATH)/configs/dsi_config.xml:system/etc/data/dsi_config.xml \
-    $(LOCAL_PATH)/configs/qmi_config.xml:system/etc/data/qmi_config.xml \
-    $(LOCAL_PATH)/configs/netmgr_config.xml:system/etc/data/netmgr_config.xml
-
-#GreyBus
-PRODUCT_PACKAGES += \
-    greybus
+    $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config
 
 #V4L2_HAL
 PRODUCT_PACKAGES += \
