@@ -9,10 +9,11 @@ PRODUCT_PACKAGES += \
     init.mmi.boot.sh \
     init.mmi.laser.sh \
     init.mmi.usb.rc \
+    init.mmi.volte.rc \
     init.oem.hw.sh \
     init.qcom.class_core.sh \
     init.qcom.early_boot.sh \
-    init.qcom.post_boot.sh \
+    init.qcom.power.rc \
     init.qcom.rc \
     init.qcom.sensors.sh \
     init.qcom.sh \
@@ -20,4 +21,3 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     ueventd.qcom.rc \
     wlan_carrier_bin.sh \
-    init.mmi.volte.rc \

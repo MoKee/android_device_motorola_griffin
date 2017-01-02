@@ -25,6 +25,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import init.qcom.power.rc
 import init.griffin.rc
 import init.target.rc
 
@@ -60,11 +61,6 @@ on early-boot
     setrlimit 8 67108864 67108864
     # set aggressive read ahead during boot up.
     write /sys/block/dm-0/queue/read_ahead_kb 2048
-    # Allow subsystem (modem etc) debugging
-    # write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
-    # write /sys/module/pil_msa/parameters/pbl_mba_boot_timeout_ms ${persist.sys.mba_boot_timeout}
-    # write /sys/module/pil_msa/parameters/modem_auth_timeout_ms ${persist.sys.modem_auth_timeout}
-    # write /sys/module/peripheral_loader/parameters/proxy_timeout_ms ${persist.sys.pil_proxy_timeout}
     write /sys/kernel/boot_adsp/boot 1
     # Motorola uses external sensorhub, do not boot the slpi
     # write /sys/kernel/boot_slpi/boot 1
@@ -100,7 +96,7 @@ on boot
     chown bluetooth net_bt /sys/class/rfkill/rfkill0/device/extldo
     chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
 
-    #Create QMUX deamon socket area
+    # Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
     chmod 2770 /dev/socket/qmux_radio
     mkdir /dev/socket/qmux_audio 0770 media audio
@@ -194,7 +190,7 @@ on boot
 
 # msm specific files that need to be created on /data
 on post-fs-data
-    #Create directories for Fingerprint
+    # Create directories for Fingerprint
     mkdir /data/misc/stargate 0770 system system
     mkdir /data/misc/stargate/bg_estimation 0770 system system
     mkdir /data/misc/stargate/calib_test 0770 system system
@@ -579,12 +575,6 @@ service sensor-sh /system/bin/sh /init.qcom.sensors.sh
     user root
     oneshot
 
-service qcom-post-boot /system/bin/sh /init.qcom.post_boot.sh
-    class late_start
-    user root
-    disabled
-    oneshot
-
 service config-zram /system/bin/sh /system/etc/init.qcom.zram.sh
    class late_start
    user root
@@ -644,6 +634,3 @@ service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
     class late_start
     user system
     group system
-
-on charger
-    setprop persist.sys.usb.config charging

@@ -172,23 +172,7 @@ on post-fs-data
     # Imager tuning data for camera subsystem
     mkdir /data/misc/imager 0770 camera camera
 
-on moto-charger
-    setprop ro.board.platform msm8996
-    trigger firmware_mounts_complete
-    start qcom-post-boot
-    start gbmodinstall
-    start charge_only_mode
-    start batt_health
-    start thermal-com
-
 on boot
-   # update cpuset for each cgroup
-   write /dev/cpuset/foreground/cpus 0-3
-   write /dev/cpuset/foreground/boost/cpus 0-3
-   write /dev/cpuset/background/cpus 0-3
-   write /dev/cpuset/system-background/cpus 0-3
-   write /dev/cpuset/top-app/cpus 0-3
-
    # STML4 driver parameter permissions
    chown root mot_tcmd /sys/module/motosh/parameters/irq_disable
    chmod 0660 /sys/module/motosh/parameters/irq_disable
@@ -321,15 +305,6 @@ service apanic_copy /system/bin/apanic_copy.sh
     group log
     oneshot
     disabled
-
-on charger
-    trigger early-fs
-    trigger fs
-    trigger post-fs
-    trigger post-fs-data
-    trigger moto-charger
-    class_stop main
-    class_stop late_start
 
 service pstore_annotate /system/bin/pstore_annotate.sh build
     class main
