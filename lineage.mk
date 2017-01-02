@@ -29,7 +29,7 @@ PRODUCT_COPY_FILES += \
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/griffin/overlay
 
-PRODUCT_NAME := cm_griffin
+PRODUCT_NAME := lineage_griffin
 PRODUCT_BRAND := motorola
 PRODUCT_DEVICE := griffin
 PRODUCT_MODEL := XT1650
