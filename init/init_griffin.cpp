@@ -89,8 +89,16 @@ void vendor_load_properties()
        // Do things?
     }
 
-    if (ISMATCH(sku, "XT1650-03")) {
-       // TODO
+    if (ISMATCH(sku, "XT1650-05")) {
+       property_set("persist.radio.custom_ecc", "1");
+       property_set("persist.radio.data_ltd_sys_ind", "1");
+       property_set("persist.radio.hw_mbn_update", "0");
+       property_set("persist.radio.ignore_dom_time", "5");
+       property_set("persist.radio.start_ota_daemon", "1");
+       property_set("persist.radio.sw_mbn_update", "0");
+       property_set("ro.telephony.call_ring.multiple", "false");
+       property_set("persist.oem.dump", "0");
+       property_set("persist.volte_enalbed_by_hw", "1");
     }
 
     device = property_get("ro.product.device");
