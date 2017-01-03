@@ -42,8 +42,10 @@ on boot
     mkdir /dev/bus/usb 0755 root root
     chown system system /sys/class/android_usb/android0/secure
     chmod 0660 /sys/class/android_usb/android0/secure
+
     # Configure BAM2BAM_IPA for RNDIS
     write /sys/class/android_usb/android0/f_rndis_qc/rndis_transports BAM2BAM_IPA
+
     # Disable RNDIS UL aggregation
     write /sys/class/android_usb/android0/f_rndis_qc/max_pkt_per_xfer 1
     write /sys/module/g_android/parameters/mtp_rx_req_len 524288

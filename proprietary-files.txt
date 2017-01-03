@@ -739,3 +739,12 @@ vendor/firmware/libpn548ad_fw.so
 bin/mods_camd
 lib/libmodmanager.so
 lib64/libmodmanager.so
+
+# Post Processing
+etc/permissions/com.qti.snapdragon.sdk.display.xml
+framework/com.qti.snapdragon.sdk.display.jar
+-vendor/app/colorservice/colorservice.apk
+vendor/bin/mm-pp-dpps
+vendor/lib64/libdisp-aba.so
+vendor/lib/libdisp-aba.so
+

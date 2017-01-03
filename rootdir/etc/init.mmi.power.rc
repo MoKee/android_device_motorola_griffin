@@ -1,0 +1,28 @@
+on charger
+    wait /dev/block/bootdevice
+    mount_all charger.fstab.qcom
+    trigger early-fs
+    trigger fs
+    trigger post-fs
+    trigger post-fs-data
+    trigger moto-charger
+    class_stop main
+    class_stop late_start
+    setprop persist.sys.usb.config charging
+
+on moto-charger
+    setprop ro.board.platform msm8996
+    trigger firmware_mounts_complete
+    start gbmodinstall
+    start charge_only_mode
+    start thermal-com
+
+service thermal-com /system/vendor/bin/thermal-engine --minimode
+    class main
+    user root
+    disabled
+
+service charge_only_mode /system/bin/charge_only_mode
+    user root
+    group graphics system input
+    disabled

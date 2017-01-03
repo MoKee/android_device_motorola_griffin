@@ -2,15 +2,15 @@
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of The Linux Foundation nor
-#       the names of its contributors may be used to endorse or promote
-#       products derived from this software without specific prior written
-#       permission.
+#    * Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#    * Redistributions in binary form must reproduce the above copyright
+#      notice, this list of conditions and the following disclaimer in the
+#      documentation and/or other materials provided with the distribution.
+#    * Neither the name of The Linux Foundation nor
+#      the names of its contributors may be used to endorse or promote
+#      products derived from this software without specific prior written
+#      permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -26,43 +26,46 @@
 #
 
 import init.qcom.power.rc
-import init.griffin.rc
-import init.target.rc
+import init.mmi.rc
 
 on early-init
-    mount debugfs debugfs /sys/kernel/debug
-    chmod 0755 /sys/kernel/debug
+   mount debugfs debugfs /sys/kernel/debug
+   chmod 0755 /sys/kernel/debug
+
+   mkdir /firmware 0771 system system
+   mkdir /bt_firmware 0771 system system
+   symlink /data/tombstones /tombstones
+   mkdir /dsp 0771 media media
 
 on init
-    export LD_SHIM_LIBS /system/lib/libjustshoot.so|libshim_camera.so:/system/lib/hw/camera.msm8996.so|libcamera_shim.so:/system/vendor/lib/libmot_gpu_mapper.so|libshim_camera.so
+   export LD_PRELOAD libNimsWrap.so
 
-    # Set permissions for persist partition
-    mkdir /persist 0771 system system
+   # Set permissions for persist partition
+   mkdir /persist 0771 system system
 
-    # Support legacy paths
-    symlink /sdcard /mnt/sdcard
-    symlink /sdcard /storage/sdcard0
+   # Support legacy paths
+   symlink /sdcard /mnt/sdcard
+   symlink /sdcard /storage/sdcard0
 
-    # Add for fpc fingerprints permission
-    chmod -h 777 /dev/qseecom
-    chmod 0664 /sys/bus/spi/devices/spi12.0/irq
-    chown system system /sys/bus/spi/devices/spi12.0/irq
-    chmod 0660 /sys/bus/spi/devices/spi12.0/report_home
-    chown system system /sys/bus/spi/devices/spi12.0/report_home
-    chmod 0660 /sys/devices/soc/soc:fpc_fpc1020/update_info
-    chown system system /sys/devices/soc/soc:fpc_fpc1020/update_info
-    chmod 0660 /sys/bus/spi/devices/spi12.0/screen_state
-    chown system system /sys/bus/spi/devices/spi12.0/screen_state
-    chmod 0660 /sys/bus/spi/devices/spi12.0/clk_enable
-    chown system system /sys/bus/spi/devices/spi12.0/clk_enable
+   # Add for fpc fingerprints permission
+   chmod -h 777 /dev/qseecom
+   chmod 0664 /sys/bus/spi/devices/spi12.0/irq
+   chown system system /sys/bus/spi/devices/spi12.0/irq
+   chmod 0660 /sys/bus/spi/devices/spi12.0/report_home
+   chown system system /sys/bus/spi/devices/spi12.0/report_home
+   chmod 0660 /sys/devices/soc/soc:fpc_fpc1020/update_info
+   chown system system /sys/devices/soc/soc:fpc_fpc1020/update_info
+   chmod 0660 /sys/bus/spi/devices/spi12.0/screen_state
+   chown system system /sys/bus/spi/devices/spi12.0/screen_state
+   chmod 0660 /sys/bus/spi/devices/spi12.0/clk_enable
+   chown system system /sys/bus/spi/devices/spi12.0/clk_enable
 
 on early-boot
-    # set RLIMIT_MEMLOCK to 64MB
-    setrlimit 8 67108864 67108864
-    # set aggressive read ahead during boot up.
-    write /sys/block/dm-0/queue/read_ahead_kb 2048
-    write /sys/kernel/boot_adsp/boot 1
-
+   # set RLIMIT_MEMLOCK to 64MB
+   setrlimit 8 67108864 67108864
+   # set aggressive read ahead during boot up.
+   write /sys/block/dm-0/queue/read_ahead_kb 2048
+   write /sys/kernel/boot_adsp/boot 1
 
    # Setup HDMI Permissions
    chmod -h 664 /sys/class/graphics/fb1/hpd
@@ -116,254 +119,304 @@ on early-boot
    chown system graphics /sys/class/graphics/fb0/msm_cmd_autorefresh_en
    chown system graphics /sys/class/graphics/fb0/lineptr_value
 
-    #exec u:r:qti_init_shell:s0 -- /init.qcom.early_boot.sh
+   chown system graphics /sys/class/graphics/fb0/cabc_mode
+   chown system graphics /sys/class/graphics/fb0/acl_mode
 
 on boot
-    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
-    chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
-    chown bluetooth net_bt /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
-    chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
-    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_lpm
-    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_btwrite
-    chown system system /sys/module/sco/parameters/disable_esco
-    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
-    chown system system /sys/module/radio_iris_transport/parameters/fmsmd_set
-    chmod 0660 /sys/module/bluetooth_power/parameters/power
-    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
-    chmod 0660 /sys/module/radio_iris_transport/parameters/fmsmd_set
-    chmod 0660 /sys/class/rfkill/rfkill0/state
-    chmod 0660 /proc/bluetooth/sleep/proto
-    chown bluetooth net_bt /dev/ttyHS0
-    chmod 0660 /sys/module/hci_uart/parameters/ath_lpm
-    chmod 0660 /sys/module/hci_uart/parameters/ath_btwrite
-    chmod 0660 /dev/ttyHS0
-    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+   chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+   chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
+   chown bluetooth net_bt /sys/class/rfkill/rfkill0/state
+   chown bluetooth bluetooth /proc/bluetooth/sleep/proto
+   chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
+   chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
+   chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_lpm
+   chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_btwrite
+   chown system system /sys/module/sco/parameters/disable_esco
+   chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+   chown system system /sys/module/radio_iris_transport/parameters/fmsmd_set
+   chmod 0660 /sys/module/bluetooth_power/parameters/power
+   chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+   chmod 0660 /sys/module/radio_iris_transport/parameters/fmsmd_set
+   chmod 0660 /sys/class/rfkill/rfkill0/state
+   chmod 0660 /proc/bluetooth/sleep/proto
+   chown bluetooth net_bt /dev/ttyHS0
+   chmod 0660 /sys/module/hci_uart/parameters/ath_lpm
+   chmod 0660 /sys/module/hci_uart/parameters/ath_btwrite
+   chmod 0660 /dev/ttyHS0
+   chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+   chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
 
-    chmod 0660 /dev/ttyHS2
-    chown bluetooth bluetooth /dev/ttyHS2
+   chmod 0660 /dev/ttyHS2
+   chown bluetooth bluetooth /dev/ttyHS2
 
-    chown bluetooth net_bt /sys/class/rfkill/rfkill0/device/extldo
-    chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
+   chown bluetooth net_bt /sys/class/rfkill/rfkill0/device/extldo
+   chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
 
-    # Create QMUX deamon socket area
-    mkdir /dev/socket/qmux_radio 0770 radio radio
-    chmod 2770 /dev/socket/qmux_radio
-    mkdir /dev/socket/qmux_audio 0770 media audio
-    chmod 2770 /dev/socket/qmux_audio
-    mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
-    chmod 2770 /dev/socket/qmux_bluetooth
-    mkdir /dev/socket/qmux_gps 0770 gps gps
-    chmod 2770 /dev/socket/qmux_gps
+   # Create QMUX deamon socket area
+   mkdir /dev/socket/qmux_radio 0770 radio radio
+   chmod 2770 /dev/socket/qmux_radio
+   mkdir /dev/socket/qmux_audio 0770 media audio
+   chmod 2770 /dev/socket/qmux_audio
+   mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
+   chmod 2770 /dev/socket/qmux_bluetooth
+   mkdir /dev/socket/qmux_gps 0770 gps gps
+   chmod 2770 /dev/socket/qmux_gps
 
-    mkdir /persist/drm 0770 system system
+   mkdir /persist/drm 0770 system system
 
-    #Create NETMGR daemon socket area
-    mkdir /dev/socket/netmgr 0750 radio radio
+   #Create NETMGR daemon socket area
+   mkdir /dev/socket/netmgr 0750 radio radio
 
-    setprop wifi.interface wlan0
+   setprop wifi.interface wlan0
 
-    setprop ro.telephony.call_ring.multiple false
+   setprop ro.telephony.call_ring.multiple false
 
-    # Remove SUID bit for iproute2 ip tool
-    chmod 0755 /system/bin/ip
-    chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
+   # Remove SUID bit for iproute2 ip tool
+   chmod 0755 /system/bin/ip
+   chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
 
-    # For bridgemgr daemon to inform the USB driver of the correct transport
-    chown radio radio /sys/class/android_usb/f_rmnet_smd_sdio/transport
+   # For bridgemgr daemon to inform the USB driver of the correct transport
+   chown radio radio /sys/class/android_usb/f_rmnet_smd_sdio/transport
 
-    setprop net.tcp.2g_init_rwnd 10
+   setprop net.tcp.2g_init_rwnd 10
 
-    # Assign TCP buffer thresholds to be ceiling value of technology maximums
-    # Increased technology maximums should be reflected here.
-    write /proc/sys/net/core/rmem_max  8388608
-    write /proc/sys/net/core/wmem_max  8388608
+   # Assign TCP buffer thresholds to be ceiling value of technology maximums
+   # Increased technology maximums should be reflected here.
+   write /proc/sys/net/core/rmem_max  8388608
+   write /proc/sys/net/core/wmem_max  8388608
 
-    # To allow interfaces to get v6 address when tethering is enabled
-    write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet1/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet2/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet3/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet4/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet5/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet6/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet7/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio0/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio1/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio2/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio3/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio4/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio5/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio6/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_sdio7/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra 2
-    write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra 2
+   # To allow interfaces to get v6 address when tethering is enabled
+   write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet1/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet2/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet3/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet4/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet5/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet6/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet7/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio0/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio1/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio2/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio3/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio4/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio5/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio6/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_sdio7/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra 2
+   write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra 2
 
-    # To prevent out of order acknowledgements from making
-    # connection tracking to treat them as not belonging to
-    # the connection they belong to.
-    # Otherwise, a weird issue happens in which some long
-    # connections on high-throughput links get dropped when
-    # an ack packet comes out of order
-    write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
+   # To prevent out of order acknowledgements from making
+   # connection tracking to treat them as not belonging to
+   # the connection they belong to.
+   # Otherwise, a weird issue happens in which some long
+   # connections on high-throughput links get dropped when
+   # an ack packet comes out of order
+   write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
 
-    # Allow access for CCID command/response timeout configuration
-    chown system system /sys/module/ccid_bridge/parameters/bulk_msg_timeout
+   # Allow access for CCID command/response timeout configuration
+   chown system system /sys/module/ccid_bridge/parameters/bulk_msg_timeout
 
-    # bond0 used by FST Manager
-    chown wifi wifi /sys/class/net/bond0/bonding/queue_id
+   # bond0 used by FST Manager
+   chown wifi wifi /sys/class/net/bond0/bonding/queue_id
 
-    # NFC
-    chmod 0666 /dev/pn544
-    chown nfc nfc /dev/pn544
-    chmod 0666 /dev/p61
-    chown spi spi /dev/p61
+   # NFC
+   chmod 0666 /dev/pn544
+   chown nfc nfc /dev/pn544
+   chmod 0666 /dev/p61
+   chown spi spi /dev/p61
+
+   start rmt_storage
+
+   # access permission for secure touch
+   chmod 0660 /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch_enable
+   chmod 0440 /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch
+   chown system drmrpc /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch_enable
+   chown system drmrpc /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch
+   write /proc/sys/kernel/sched_boost 1
+   write /sys/devices/soc/75ba000.i2c/i2c-12/12-0020/input/input0/update_fw 1
+
+   # Turn on GPU rate stats through gpu_gx_gfx3d_clk
+   chown system system /sys/kernel/debug/clk/gpu_gx_gfx3d_clk/rate_stats
+   chmod 0660 /sys/kernel/debug/clk/gpu_gx_gfx3d_clk/rate_stats
+   write /sys/kernel/debug/clk/gpu_gx_gfx3d_clk/rate_stats 1
+
+on fs
+   wait /dev/block/bootdevice
+   mount_all fstab.qcom
+
+   # Keeping following partitions outside fstab file. As user may not have
+   # these partition flashed on the device. Failure to mount any partition in fstab file
+   # results in failure to launch late-start class.
+
+   wait /dev/block/bootdevice/by-name/persist
+   mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
+   restorecon_recursive /persist
+   mkdir /persist/data 0700 system system
+
+   wait /dev/block/bootdevice/by-name/dsp
+   mount ext4 /dev/block/bootdevice/by-name/dsp /dsp ro nosuid nodev barrier=1
+
+   wait /dev/block/bootdevice/by-name/modem
+   mount ext4 /dev/block/bootdevice/by-name/modem /firmware ro nosuid nodev
+
+   wait /dev/block/bootdevice/by-name/bluetooth
+   mount ext4 /dev/block/bootdevice/by-name/bluetooth /bt_firmware ro nosuid nodev
 
 # msm specific files that need to be created on /data
 on post-fs-data
 
-    # Create directories for Fingerprint
-    mkdir /data/fpc_images 0770 system system
-    mkdir /data/fpc_images/verify 0770 system system
-    mkdir /data/fpc_images/enroll 0770 system system
-    mkdir /data/fpc 0770 system system
-    mkdir /data/misc/fp 0700 system system
-    mkdir /data/misc/stargate 0770 system system
-    mkdir /data/misc/stargate/bg_estimation 0770 system system
-    mkdir /data/misc/stargate/calib_test 0770 system system
-    mkdir /data/misc/stargate/database 0770 system system
+   mkdir /data/tombstones 0771 system system
+   mkdir /tombstones/modem 0771 system system
+   mkdir /tombstones/lpass 0771 system system
+   mkdir /tombstones/wcnss 0771 system system
+   mkdir /tombstones/dsps 0771 system system
+   mkdir /persist/qc_senseid 0700 system system
+   mkdir /data/misc/dts 0770 media audio
+   mkdir /data/usf 0700 system system
+   mkdir /data/misc/tloc/ 0700 system drmrpc
+   mkdir /data/misc/qvop 0660 system system
+   mkdir /data/misc/audio_pp 0771 media audio
 
-    # Create directory for TZ Apps
-    mkdir /data/misc/qsee 0770 system system
+   # Create directories for Fingerprint
+   mkdir /data/fpc_images 0770 system system
+   mkdir /data/fpc_images/verify 0770 system system
+   mkdir /data/fpc_images/enroll 0770 system system
+   mkdir /data/fpc 0770 system system
+   mkdir /data/misc/fp 0700 system system
+   mkdir /data/misc/stargate 0770 system system
+   mkdir /data/misc/stargate/bg_estimation 0770 system system
+   mkdir /data/misc/stargate/calib_test 0770 system system
+   mkdir /data/misc/stargate/database 0770 system system
 
-    #Create folder for mm-qcamera-daemon
-    mkdir /data/misc/camera 0770 camera camera
+   # Create directory for TZ Apps
+   mkdir /data/misc/qsee 0770 system system
 
-    mkdir /data/media 0770 media_rw media_rw
-    chown media_rw media_rw /data/media
+   #Create folder for mm-qcamera-daemon
+   mkdir /data/misc/camera 0770 camera camera
 
-    mkdir /data/misc/ipa 0700 net_admin net_admin
+   mkdir /data/media 0770 media_rw media_rw
+   chown media_rw media_rw /data/media
 
-    mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
+   mkdir /data/misc/ipa 0700 net_admin net_admin
 
-    # Create the directories used by the Wireless subsystem
-    mkdir /data/misc/wifi 0770 wifi wifi
-    mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
-    mkdir /data/misc/dhcp 0750 dhcp system
+   mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
 
-    # Create port-bridge log dir
-    mkdir /data/misc/port_bridge 0770 radio radio
-    chmod 0770 /data/misc/port_bridge
+   # Create the directories used by the Wireless subsystem
+   mkdir /data/misc/wifi 0770 wifi wifi
+   mkdir /data/misc/wifi/sockets 0770 wifi wifi
+   mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
+   mkdir /data/misc/dhcp 0750 dhcp system
 
-    # Create the directories used by CnE subsystem
-    mkdir /data/connectivity 0771 system system
-    chown system system /data/connectivity
+   # Create port-bridge log dir
+   mkdir /data/misc/port_bridge 0770 radio radio
+   chmod 0770 /data/misc/port_bridge
 
-    # Create the directories used by DPM subsystem
-    mkdir /data/dpm 0771 system system
-    chown system system /data/dpm
+   # Create the directories used by CnE subsystem
+   mkdir /data/connectivity 0771 system system
+   chown system system /data/connectivity
 
-    mkdir /data/dpm/nsrm 0771 system system
-    chown system system /data/dpm/nsrm
+   # Create the directories used by DPM subsystem
+   mkdir /data/dpm 0771 system system
+   chown system system /data/dpm
 
-    # Create directory used by audio subsystem
-    mkdir /data/misc/audio 0770 audio audio
+   mkdir /data/dpm/nsrm 0771 system system
+   chown system system /data/dpm/nsrm
 
-    # Create directory for audio delta files
-    mkdir /data/misc/audio/acdbdata 0770 media audio
-    mkdir /data/misc/audio/acdbdata/delta 0770 media audio
+   # Create directory used by audio subsystem
+   mkdir /data/misc/audio 0770 audio audio
 
-    # Create directory used by the DASH client
-    mkdir /data/misc/dash 0770 media audio
+   # Create directory for audio delta files
+   mkdir /data/misc/audio/acdbdata 0770 media audio
+   mkdir /data/misc/audio/acdbdata/delta 0770 media audio
 
-    # Create directory used by display clients
-    mkdir /data/misc/display 0770 system graphics
+   # Create directory used by the DASH client
+   mkdir /data/misc/dash 0770 media audio
 
-    # Mounting of persist is moved to 'on emmc-fs' and 'on fs' sections
-    # We chown/chmod /persist again so because mount is run as root + defaults
-    chown system system /persist
-    chmod 0771 /persist
-    chmod 0664 /sys/devices/platform/msm_sdcc.1/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.2/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.3/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.4/polling
+   # Create directory used by display clients
+   mkdir /data/misc/display 0770 system graphics
 
-    # Chown polling nodes as needed from UI running on system server
-    chown system system /sys/devices/platform/msm_sdcc.1/polling
-    chown system system /sys/devices/platform/msm_sdcc.2/polling
-    chown system system /sys/devices/platform/msm_sdcc.3/polling
-    chown system system /sys/devices/platform/msm_sdcc.4/polling
+   # Mounting of persist is moved to 'on emmc-fs' and 'on fs' sections
+   # We chown/chmod /persist again so because mount is run as root + defaults
+   chown system system /persist
+   chmod 0771 /persist
+   chmod 0664 /sys/devices/platform/msm_sdcc.1/polling
+   chmod 0664 /sys/devices/platform/msm_sdcc.2/polling
+   chmod 0664 /sys/devices/platform/msm_sdcc.3/polling
+   chmod 0664 /sys/devices/platform/msm_sdcc.4/polling
 
-    # Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
-    mkdir /data/system 0775 system system
+   # Chown polling nodes as needed from UI running on system server
+   chown system system /sys/devices/platform/msm_sdcc.1/polling
+   chown system system /sys/devices/platform/msm_sdcc.2/polling
+   chown system system /sys/devices/platform/msm_sdcc.3/polling
+   chown system system /sys/devices/platform/msm_sdcc.4/polling
 
-    # Create directories for Location services
-    mkdir /data/misc/location 0770 gps gps
-    mkdir /data/misc/location/mq 0770 gps gps
-    mkdir /data/misc/location/xtwifi 0770 gps gps
-    mkdir /data/misc/location/gpsone_d 0770 system gps
-    mkdir /data/misc/location/quipc 0770 gps system
-    mkdir /data/misc/location/gsiff 0770 gps gps
+   # Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
+   mkdir /data/system 0775 system system
 
-    # Create directory from IMS services
-    mkdir /data/shared 0755
-    chown system system /data/shared
+   # Create directories for Location services
+   mkdir /data/misc/location 0770 gps gps
+   mkdir /data/misc/location/mq 0770 gps gps
+   mkdir /data/misc/location/xtwifi 0770 gps gps
+   mkdir /data/misc/location/gpsone_d 0770 system gps
+   mkdir /data/misc/location/quipc 0770 gps system
+   mkdir /data/misc/location/gsiff 0770 gps gps
 
-    # Create directory for FOTA
-    mkdir /data/fota 0771
-    chown system system /data/fota
+   # Create directory from IMS services
+   mkdir /data/shared 0755
+   chown system system /data/shared
 
-    # Create /data/time folder for time-services
-    mkdir /data/time/ 0700 system system
+   # Create directory for FOTA
+   mkdir /data/fota 0771
+   chown system system /data/fota
 
-    mkdir /data/audio/ 0770 media audio
+   # Create /data/time folder for time-services
+   mkdir /data/time/ 0700 system system
 
-    # Create a folder for audio delta files
-    mkdir /data/audio/acdbdata 0770 media audio
-    mkdir /data/audio/acdbdata/delta 0770 media audio
+   mkdir /data/audio/ 0770 media audio
 
-    setprop vold.post_fs_data_done 1
+   # Create a folder for audio delta files
+   mkdir /data/audio/acdbdata 0770 media audio
+   mkdir /data/audio/acdbdata/delta 0770 media audio
 
-    # Create FM dir for patchdownloader
-    mkdir /data/misc/fm 0770 system system
-    chmod 0770 /data/misc/fm
+   setprop vold.post_fs_data_done 1
 
-    # RIDL data
-    mkdir /data/misc/SelfHost/ 0710 system shell
-    mkdir /data/misc/SelfHost/QCLogs/ 2750 system shell
-    mkdir /data/misc/SelfHost/QCLogs/temp/ 0700 system shell
-    mkdir /data/misc/SelfHost/storage/ 0700 system shell
-    mkdir /data/misc/SelfHost/Running/ 2750 system shell
-    mkdir /data/misc/SelfHost/socket/ 2770 system system
+   # Create FM dir for patchdownloader
+   mkdir /data/misc/fm 0770 system system
+   chmod 0770 /data/misc/fm
 
-    # Create PERFD deamon related dirs
-    mkdir /data/system/perfd 0770 root system
-    chmod 2770 /data/system/perfd
+   # RIDL data
+   mkdir /data/misc/SelfHost/ 0710 system shell
+   mkdir /data/misc/SelfHost/QCLogs/ 2750 system shell
+   mkdir /data/misc/SelfHost/QCLogs/temp/ 0700 system shell
+   mkdir /data/misc/SelfHost/storage/ 0700 system shell
+   mkdir /data/misc/SelfHost/Running/ 2750 system shell
+   mkdir /data/misc/SelfHost/socket/ 2770 system system
 
-    # NFC local data and nfcee xml storage
-    mkdir /data/nfc 0770 nfc nfc
-    mkdir /data/nfc/param 0770 nfc nfc
+   # Create PERFD deamon related dirs
+   mkdir /data/system/perfd 0770 root system
+   chmod 2770 /data/system/perfd
 
-    #Create IOP  deamon related dirs
-    mkdir /data/misc/iop 0770 root system
+   # NFC local data and nfcee xml storage
+   mkdir /data/nfc 0770 nfc nfc
+   mkdir /data/nfc/param 0770 nfc nfc
 
-    # Mark the copy complete flag to not completed
-    write /data/misc/radio/copy_complete 0
-    chown radio radio /data/misc/radio/copy_complete
-    chmod 0660 /data/misc/radio/copy_complete
+   #Create IOP  deamon related dirs
+   mkdir /data/misc/iop 0770 root system
 
-    # File flags for prebuilt ril db file
-    write /data/misc/radio/prebuilt_db_support 1
-    chown radio radio /data/misc/radio/prebuilt_db_support
-    chmod 0400 /data/misc/radio/prebuilt_db_support
-    write /data/misc/radio/db_check_done 0
-    chown radio radio /data/misc/radio/db_check_done
-    chmod 0660 /data/misc/radio/db_check_done
+   # Mark the copy complete flag to not completed
+   write /data/misc/radio/copy_complete 0
+   chown radio radio /data/misc/radio/copy_complete
+   chmod 0660 /data/misc/radio/copy_complete
+
+   # File flags for prebuilt ril db file
+   write /data/misc/radio/prebuilt_db_support 1
+   chown radio radio /data/misc/radio/prebuilt_db_support
+   chmod 0400 /data/misc/radio/prebuilt_db_support
+   write /data/misc/radio/db_check_done 0
+   chown radio radio /data/misc/radio/db_check_done
+   chmod 0660 /data/misc/radio/db_check_done
 
 service perfd /system/vendor/bin/perfd
    class main
@@ -371,218 +424,281 @@ service perfd /system/vendor/bin/perfd
    disabled
    socket perfd seqpacket 0666 root system
 
+service qcamerasvr /system/bin/mm-qcamera-daemon
+   class late_start
+   user camera
+   group camera system inet input graphics
+
+service fingerprintd /system/bin/fingerprintd
+   class late_start
+   user system
+   group system drmrpc
+
+service per_mgr system/bin/pm-service
+   class core
+   user system
+   group system net_raw
+   ioprio rt 4
+
+service per_proxy /system/bin/pm-proxy
+   class core
+   user system
+   group system
+   disabled
+
+service mdm_helper /system/bin/mdm_helper
+   class core
+   group root system
+
+service qseecomd /system/bin/qseecomd
+   class core
+   user root
+   group root
+
 service qcomsysd /system/bin/qcom-system-daemon
-    class main
-    user root
-    group root qcom_diag
+   class main
+   user root
+   group root qcom_diag
 
 service ssr_setup /system/bin/ssr_setup
-    oneshot
-    disabled
+   oneshot
+   disabled
 
 service ss_ramdump /system/bin/subsystem_ramdump
-    class main
-    user system
-    group log sdcard_rw sdcard_r diag
-    disabled
-
-service qcom-c_core-sh /system/bin/sh /init.qcom.class_core.sh
-    class core
-    user root
-    oneshot 
+   class main
+   user system
+   group log sdcard_rw sdcard_r diag
+   disabled
 
 service cnd /system/bin/cnd
-    class main
-    socket cnd stream 660 root inet
+   class main
+   socket cnd stream 660 root inet
 
 service dpmd /system/bin/dpmd
-    class late_start
-    socket dpmd stream 660 root system
+   class late_start
+   socket dpmd stream 660 root system
 
 service irsc_util /system/bin/irsc_util "/etc/sec_config"
-    class core
-    user root
-    oneshot
+   class core
+   user root
+   oneshot
 
 service rmt_storage /system/bin/rmt_storage
-    class core
-    user root
+   class core
+   user root
 
 service tftp_server /system/bin/tftp_server
    class core
    user root
 
 service start_hci_filter /system/bin/wcnss_filter
-    class late_start
-    user root
-    group bluetooth qcom_diag
-    disabled
+   class late_start
+   user root
+   group bluetooth qcom_diag
+   disabled
 
 service port-bridge /system/bin/port-bridge
-    class main
-    user radio system
-    group radio system inet
-    oneshot
+   class main
+   user radio system
+   group radio system inet
+   oneshot
 
 # QMUX must be in multiple groups to support external process connections
 service qmuxd /system/bin/qmuxd
-    class core
-    user root
-    group radio audio bluetooth gps nfc diag qcom_diag
+   class core
+   user root
+   group radio audio bluetooth gps nfc diag qcom_diag
 
 service netmgrd /system/bin/netmgrd
-    class main
+   class main
 
 service ipacm-diag /system/bin/ipacm-diag
-    class main
-    user system
-    socket ipacm_log_file dgram 660 system net_admin
-    group net_admin qcom_diag
+   class main
+   user system
+   socket ipacm_log_file dgram 660 system net_admin
+   group net_admin qcom_diag
 
 service ipacm /system/bin/ipacm
-    class main
-    user net_admin
-    group net_admin inet
+   class main
+   user net_admin
+   group net_admin inet
 
 service qti /system/vendor/bin/qti
-    class main
-    user radio
-    group radio net_raw qcom_diag usb net_admin
+   class main
+   user radio
+   group radio net_raw qcom_diag usb net_admin
 
 service p2p_supplicant /system/bin/wpa_supplicant \
-    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
-    -I/system/etc/wifi/p2p_supplicant_overlay.conf -N \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
-    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 -dd \
-    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-    #   we will start as root and wpa_supplicant will switch to user wifi
-    #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
+   -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
+   -I/system/etc/wifi/p2p_supplicant_overlay.conf -N \
+   -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
+   -I/system/etc/wifi/wpa_supplicant_overlay.conf \
+   -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 -dd \
+   -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
+   #   we will start as root and wpa_supplicant will switch to user wifi
+   #   after setting up the capabilities required for WEXT
+   #   user wifi
+   #   group wifi inet keystore
+   class main
+   socket wpa_wlan0 dgram 660 wifi wifi
+   disabled
+   oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
-    -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -dd \
-    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-    #   we will start as root and wpa_supplicant will switch to user wifi
-    #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
+   -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
+   -I/system/etc/wifi/wpa_supplicant_overlay.conf \
+   -O/data/misc/wifi/sockets -dd \
+   -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
+   #   we will start as root and wpa_supplicant will switch to user wifi
+   #   after setting up the capabilities required for WEXT
+   #   user wifi
+   #   group wifi inet keystore
+   class main
+   socket wpa_wlan0 dgram 660 wifi wifi
+   disabled
+   oneshot
 
 service wigig_supplicant /system/bin/wpa_supplicant \
-    -iwigig0 -Dnl80211 -c/data/misc/wifi/wigig_supplicant.conf \
-    -m/data/misc/wifi/wigig_p2p_supplicant.conf \
-    -O/data/misc/wifi/wigig_sockets -dd \
-    -e/data/misc/wifi/wigig_entropy.bin -g@android:wpa_wigig0
-    #   we will start as root and wpa_supplicant will switch to user wifi
-    #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
-    class main
-    socket wpa_wigig0 dgram 660 wifi wifi
-    disabled
-    oneshot
+   -iwigig0 -Dnl80211 -c/data/misc/wifi/wigig_supplicant.conf \
+   -m/data/misc/wifi/wigig_p2p_supplicant.conf \
+   -O/data/misc/wifi/wigig_sockets -dd \
+   -e/data/misc/wifi/wigig_entropy.bin -g@android:wpa_wigig0
+   #   we will start as root and wpa_supplicant will switch to user wifi
+   #   after setting up the capabilities required for WEXT
+   #   user wifi
+   #   group wifi inet keystore
+   class main
+   socket wpa_wigig0 dgram 660 wifi wifi
+   disabled
+   oneshot
 
 service wlan_logging /system/bin/cnss_diag -q -f
-    class main
-    user root
-    group root
-    disabled
-    oneshot
+   class main
+   user root
+   group root
+   disabled
+   oneshot
 
 service cnss-daemon /system/bin/cnss-daemon -n
-    class late_start
+   class late_start
 
 service loc_launcher /system/bin/loc_launcher
-    #loc_launcher will start as root and set its uid to gps
-    class late_start
-    group gps inet net_raw qcom_diag net_admin wifi
+   #loc_launcher will start as root and set its uid to gps
+   class late_start
+   group gps inet net_raw qcom_diag net_admin wifi
 
 service qcom-sh /system/bin/sh /init.qcom.sh
-    class late_start
-    user root
-    oneshot
+   class late_start
+   user root
+   oneshot
 
 service sensor-sh /system/bin/sh /init.qcom.sensors.sh
-    class core
-    user root
-    oneshot
+   class core
+   user root
+   oneshot
 
 service atfwd /system/bin/ATFWD-daemon
-    class late_start
-    user root
-    group system radio
-
-service ril-daemon /system/bin/rild
-    class main
-    socket rild stream 660 root radio
-    socket sap_uim_socket1 stream 660 bluetooth bluetooth
-    socket rild-debug stream 660 radio system
-    socket cutback stream 660 media radio
-    user root
-    group radio cache inet misc audio log qcom_diag net_raw diag wifi compass
+   class late_start
+   user root
+   group system radio
 
 service ril-daemon2 /system/bin/rild -c 2
-    class main
-    socket rild2 stream 660 root radio
-    socket rild-debug2 stream 660 radio system
-    user root
-    group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log
+   class main
+   socket rild2 stream 660 root radio
+   socket rild-debug2 stream 660 radio system
+   user root
+   group radio cache inet misc audio sdcard_r sdcard_rw qcom_diag diag log
 
 service msm_irqbalance /system/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance.conf
-    class core
-    user root
-    group root
-    disabled
+   class core
+   user root
+   group root
+   disabled
 
 service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
-    class late_start
-    user system
-    group system
+   class late_start
+   user system
+   group system
+
+service time_daemon /system/bin/time_daemon
+   class late_start
+   user root
+   group root
+
+service adsprpcd /system/bin/adsprpcd
+   class main
+   user media
+   group media
+
+service audiod /system/bin/audiod
+   class late_start
+   user system
+   group system
+
+service ppd /system/vendor/bin/mm-pp-dpps
+   class late_start
+   user system
+   group system graphics
+   socket pps stream 0660 system system
+   disabled
+
+on property:init.svc.surfaceflinger=stopped
+   stop ppd
+
+on property:init.svc.surfaceflinger=running
+   start ppd
+
+on property:init.svc.surfaceflinger=restarting
+   stop ppd
+
+on property:init.svc.zygote=stopped
+   stop ppd
+
+on property:init.svc.zygote=running
+   start ppd
+
+on property:init.svc.zygote=restarting
+   stop ppd
+
+on property:init.svc.per_mgr=running
+   start per_proxy
+
+on property:sys.shutdown.requested=*
+   stop per_proxy
 
 on property:wifi.fccutild.load.qcacld=true
-    insmod /system/lib/modules/qca_cld/qca_cld_wlan.ko con_mode=5
+   insmod /system/lib/modules/qca_cld/qca_cld_wlan.ko con_mode=5
 
 on property:crypto.driver.load=1
-     insmod /system/lib/modules/qce.ko
-     insmod /system/lib/modules/qcedev.ko
+    insmod /system/lib/modules/qce.ko
+    insmod /system/lib/modules/qcedev.ko
 
 on property:persist.radio.atfwd.start=false
-    stop atfwd
+   stop atfwd
 
 on property:radio.atfwd.start=false
-    stop atfwd
+   stop atfwd
 
 on property:persist.sys.ssr.restart_level=*
-    start ssr_setup
+   start ssr_setup
 
 on property:persist.sys.ssr.enable_ramdumps=1
-    write /sys/module/subsystem_restart/parameters/enable_ramdumps 1
-    start ss_ramdump
+   write /sys/module/subsystem_restart/parameters/enable_ramdumps 1
+   start ss_ramdump
 
 on property:persist.sys.ssr.enable_ramdumps=0
-    write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
+   write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
 
 on property:sys.boot_completed=1
-    write /dev/kmsg "Boot completed "
-    #Reset the "read ahead" setting for system patition
-    #result: ext4: 32KB, dm_verity:64KB, block layer: 128KB
-    write /sys/fs/ext4/dm-0/inode_readahead_blks 8
-    write /sys/module/dm_verity/parameters/prefetch_cluster 65536
-    write /sys/block/dm-0/queue/read_ahead_kb 128
+   write /dev/kmsg "Boot completed "
+   #Reset the "read ahead" setting for system patition
+   #result: ext4: 32KB, dm_verity:64KB, block layer: 128KB
+   write /sys/fs/ext4/dm-0/inode_readahead_blks 8
+   write /sys/module/dm_verity/parameters/prefetch_cluster 65536
+   write /sys/block/dm-0/queue/read_ahead_kb 128
 
 on property:wc_transport.start_hci=true
-    start start_hci_filter
+   start start_hci_filter
 
 on property:wc_transport.start_hci=false
-    stop start_hci_filter
+   stop start_hci_filter

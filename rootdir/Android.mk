@@ -19,26 +19,10 @@ LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE       := init.class_main.sh
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES    := etc/init.class_main.sh
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
 LOCAL_MODULE       := init.gbmods.sh
 LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_SRC_FILES    := etc/init.gbmods.sh
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE       := init.griffin.rc
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := ETC
-LOCAL_SRC_FILES    := etc/init.griffin.rc
 LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
@@ -75,6 +59,22 @@ LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE       := init.mmi.power.rc
+LOCAL_MODULE_TAGS  := optional eng
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := etc/init.mmi.power.rc
+LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE       := init.mmi.rc
+LOCAL_MODULE_TAGS  := optional eng
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := etc/init.mmi.rc
+LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE       := init.mmi.usb.rc
 LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := ETC
@@ -95,22 +95,6 @@ LOCAL_MODULE       := init.oem.hw.sh
 LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_SRC_FILES    := etc/init.oem.hw.sh
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE       := init.qcom.class_core.sh
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES    := etc/init.qcom.class_core.sh
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE       := init.qcom.early_boot.sh
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES    := etc/init.qcom.early_boot.sh
 LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
@@ -143,22 +127,6 @@ LOCAL_MODULE       := init.qcom.sh
 LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_SRC_FILES    := etc/init.qcom.sh
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE       := init.qcom.syspart_fixup.sh
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES    := etc/init.qcom.syspart_fixup.sh
-LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE       := init.target.rc
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := ETC
-LOCAL_SRC_FILES    := etc/init.target.rc
 LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
