@@ -246,23 +246,8 @@ on fs
    wait /dev/block/bootdevice
    mount_all fstab.qcom
 
-   # Keeping following partitions outside fstab file. As user may not have
-   # these partition flashed on the device. Failure to mount any partition in fstab file
-   # results in failure to launch late-start class.
-
-   wait /dev/block/bootdevice/by-name/persist
-   mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
    restorecon_recursive /persist
    mkdir /persist/data 0700 system system
-
-   wait /dev/block/bootdevice/by-name/dsp
-   mount ext4 /dev/block/bootdevice/by-name/dsp /dsp ro nosuid nodev barrier=1
-
-   wait /dev/block/bootdevice/by-name/modem
-   mount ext4 /dev/block/bootdevice/by-name/modem /firmware ro nosuid nodev
-
-   wait /dev/block/bootdevice/by-name/bluetooth
-   mount ext4 /dev/block/bootdevice/by-name/bluetooth /bt_firmware ro nosuid nodev
 
 # msm specific files that need to be created on /data
 on post-fs-data
@@ -437,7 +422,7 @@ service fingerprintd /system/bin/fingerprintd
 service per_mgr system/bin/pm-service
    class core
    user system
-   group system net_raw
+   group system
    ioprio rt 4
 
 service per_proxy /system/bin/pm-proxy
@@ -585,7 +570,7 @@ service cnss-daemon /system/bin/cnss-daemon -n
 service loc_launcher /system/bin/loc_launcher
    #loc_launcher will start as root and set its uid to gps
    class late_start
-   group gps inet net_raw qcom_diag net_admin wifi
+   group gps inet qcom_diag wifi
 
 service qcom-sh /system/bin/sh /init.qcom.sh
    class late_start
