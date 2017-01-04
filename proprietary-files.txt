@@ -16,7 +16,6 @@ vendor/lib64/libadsp_default_listener.so
 vendor/lib/libadsp_hvx_stub.so
 vendor/lib/libadsp_hvx_callback_skel.so
 vendor/lib/libadsp_default_listener.so
-vendor/lib64/libadsp_default_listener.so
 etc/firmware/sheridan_vrgain.bin
 etc/firmware/vrgain.bin
 
@@ -113,7 +112,7 @@ etc/permissions/com.quicinc.cne.xml
 framework/ConnectivityExt.jar
 framework/cneapiclient.jar
 framework/com.quicinc.cne.jar
-#-priv-app/CNEService/CNEService.apk
+-priv-app/CNEService/CNEService.apk
 vendor/lib/libNimsWrap.so
 vendor/lib/libcne.so
 vendor/lib/libcneapiclient.so
@@ -142,7 +141,6 @@ vendor/lib/mediadrm/libwvdrmengine.so
 vendor/lib64/libSecureUILib.so
 
 vendor/lib/libtime_genoff.so
-vendor/lib/libdiag.so
 vendor/lib/libQSEEComAPI.so
 vendor/lib/libdrmfs.so
 vendor/lib/libdrmtime.so
@@ -158,7 +156,6 @@ vendor/lib/libGPTEE.so
 vendor/lib/libmm-hdcpmgr.so
 vendor/lib/libmmQSM.so
 vendor/lib64/libtime_genoff.so
-vendor/lib64/libdiag.so
 vendor/lib64/libQSEEComAPI.so
 vendor/lib64/libdrmfs.so
 vendor/lib64/libdrmtime.so
@@ -200,6 +197,8 @@ etc/permissions/com.qti.location.sdk.xml
 etc/permissions/com.qualcomm.location.xml
 framework/com.qti.location.sdk.jar
 -lib64/libloc_api_v02.so
+lib64/libloc_ds_api.so
+-priv-app/com.qualcomm.location/com.qualcomm.location.apk
 vendor/bin/slim_daemon
 vendor/lib64/hw/flp.default.so
 vendor/lib64/libalarmservice_jni.so
@@ -217,15 +216,13 @@ vendor/lib64/libloc_xtra.so
 vendor/lib64/liblocationservice.so
 vendor/lib64/liblocationservice_glue.so
 vendor/lib64/liblowi_client.so
+vendor/lib64/liblowi_wifihal.so
+vendor/lib64/liblowi_wifihal_nl.so
 vendor/lib64/libquipc_os_api.so
 vendor/lib64/libulp2.so
 vendor/lib64/libxt_native.so
 vendor/lib64/libxtadapter.so
 vendor/lib64/libxtwifi_ulp_adaptor.so
-
-# GPS MOTO
-vendor/lib/libsensor1.so
-vendor/lib64/libsensor1.so
 
 # Keystore
 vendor/lib/hw/keystore.msm8996.so
@@ -330,7 +327,6 @@ vendor/lib64/egl/libq3dtools_esx.so
 vendor/lib/egl/libQTapGLES.so
 vendor/lib64/egl/libQTapGLES.so
 
-
 # Radio
 -priv-app/atfwd/atfwd.apk
 -app/datastatusnotification/datastatusnotification.apk
@@ -356,7 +352,6 @@ vendor/lib64/libconfigdb.so
 vendor/lib64/liblqe.so
 vendor/lib64/libmdmdetect.so
 vendor/lib64/libnetmgr.so
-vendor/lib64/libqcmaputils.so
 vendor/lib64/libril-qc-qmi-1.so
 vendor/lib64/libril-qc-radioconfig.so
 vendor/lib64/libril-qcril-hook-oem.so
@@ -365,8 +360,6 @@ vendor/qcril.db
 
 # MOTO RIL
 bin/qmi_motext_hook
-lib64/libmotext_inf.so
-lib/libmotext_inf.so
 lib64/libmotext_inf.so
 lib/libmotext_inf.so
 lib/libmdmcutback.so
@@ -456,7 +449,6 @@ vendor/lib64/libqmi_common_so.so
 vendor/lib64/libqmi_csi.so
 vendor/lib64/libqmi_encdec.so
 vendor/lib64/libqmiservices.so
-vendor/lib64/libquipc_os_api.so
 vendor/lib64/libsmemlog.so
 
 # Perf
@@ -555,7 +547,6 @@ lib/libcamerabgproc-jni.so
 lib64/libcamerabgproc-jni.so
 vendor/lib/libmmcamera_vstab_module.so
 lib/libjustshoot.so
-lib/lib_motsensorlistener.so
 lib/libAlAisWrap.so
 lib/libbson.so
 lib64/libbson.so
@@ -653,8 +644,16 @@ vendor/lib/libchromatix_mot_imx214_postproc.so
 # PERF
 vendor/lib64/libqti-perfd-client.so
 vendor/lib/libqti-perfd-client.so
-
-
+vendor/bin/perfd
+vendor/etc/perf-profile0.conf
+vendor/etc/perf-profile1.conf
+vendor/etc/perf-profile2.conf
+vendor/etc/perf-profile3.conf
+vendor/etc/perf-profile4.conf
+vendor/etc/perf-profile5.conf
+vendor/etc/perf-profile6.conf
+vendor/lib/libqc-opt.so
+vendor/lib64/libqc-opt.so
 
 # Camera firmware
 etc/firmware/cpp_firmware_v1_10_0.fw
@@ -739,3 +738,11 @@ vendor/firmware/libpn548ad_fw.so
 bin/mods_camd
 lib/libmodmanager.so
 lib64/libmodmanager.so
+
+# Post Processing
+etc/permissions/com.qti.snapdragon.sdk.display.xml
+framework/com.qti.snapdragon.sdk.display.jar
+-vendor/app/colorservice/colorservice.apk
+vendor/bin/mm-pp-dpps
+vendor/lib64/libdisp-aba.so
+vendor/lib/libdisp-aba.so

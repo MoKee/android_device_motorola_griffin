@@ -1,4 +1,5 @@
 PRODUCT_PACKAGES += \
+    audiod \
     audio_policy.msm8996 \
     audio.a2dp.default \
     audio.primary.msm8996 \

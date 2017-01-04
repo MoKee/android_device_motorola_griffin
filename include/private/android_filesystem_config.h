@@ -263,7 +263,6 @@ static const struct android_id_info android_ids[] = {
     { "fingerp",       AID_FINGERP, },
     { "mot_esdfs",     AID_MOT_ESDFS, },
     { "mot_atvc",      AID_MOT_ATVC, },
-    { "mot_esdfs",     AID_MOT_ESDFS, },
     { "power",         AID_POWER, },
     { "itson",         AID_ITSON, },
     { "mot_dtv",       AID_MOT_DTV, },

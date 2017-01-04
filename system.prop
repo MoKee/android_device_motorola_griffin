@@ -2,6 +2,13 @@
 # Moto Z
 #
 
+## QCOM BUILD
+# This is the build that came with the device
+# keeping this here and incrementing it as needed
+# once we start upgrading so we can keep track of
+# things properly.
+ro.build.version.qcom=LA.HB.1.3.2-15400-8x96.0
+
 ## Audio
 audio.deep_buffer.media=true
 audio.dolby.ds2.enabled=false

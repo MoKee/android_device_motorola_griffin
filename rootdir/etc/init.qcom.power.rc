@@ -103,31 +103,19 @@ on enable-low-power
      # Enable all LPMs by default
      write /sys/module/lpm_levels/parameters/sleep_disabled "N"
 
+     # Set idle GPU to 133 Mhz
+     write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+
+     # Set perfd properties
+     rm /data/system/perfd/default_values
+     start perfd
+
      start iop
 
 on charger
     write /sys/devices/system/cpu/cpu2/online 0
     write /sys/devices/system/cpu/cpu3/online 0
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
-    wait /dev/block/bootdevice
-    mount_all charger.fstab.qcom
-    trigger early-fs
-    trigger fs
-    trigger post-fs
-    trigger post-fs-data
-    trigger moto-charger
-    class_stop main
-    class_stop late_start
-    setprop persist.sys.usb.config charging
-
-on moto-charger
-    setprop ro.board.platform msm8996
-    trigger firmware_mounts_complete
-    start qcom-post-boot
-    start gbmodinstall
-    start charge_only_mode
-    start batt_health
-    start thermal-com
 
 on class_start:late_start
     trigger enable-low-power
@@ -138,3 +126,27 @@ on property:init.svc.recovery=running
 on property:dev.bootcomplete=1
     write /sys/block/dm-0/queue/read_ahead_kb 128
     setprop sys.io.scheduler "bfq"
+
+service perfd /system/vendor/bin/perfd
+   class main
+   user root
+   socket perfd seqpacket 0666 root system
+   disabled
+   writepid /dev/cpuset/system-background/tasks
+
+service energy-awareness /system/bin/energy-awareness
+    class main
+    user root
+    group system
+    oneshot
+
+service thermal-engine /system/vendor/bin/thermal-engine
+   class main
+   user root
+   socket thermal-send-client stream 0666 system system
+   socket thermal-recv-client stream 0660 system system
+   socket thermal-recv-passive-client stream 0666 system system
+   group root
+   socket thermal-send-client stream 0666 system system
+   socket thermal-recv-client stream 0660 system system
+   socket thermal-recv-passive-client stream 0666 system system
