@@ -44,4 +44,3 @@ on property:sys.ims.QMI_DAEMON_STATUS=1
 service cnd /system/bin/cnd
     class late_start
     socket cnd stream 660 root inet
-

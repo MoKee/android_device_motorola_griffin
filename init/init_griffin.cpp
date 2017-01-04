@@ -85,6 +85,9 @@ void vendor_load_properties()
     target_ram();
     num_sims();
 
+    property_set("ro.build.fingerprint", "motorola/griffin/griffin:6.0.1/MPL24.246-20/21:user/release-keys");
+    property_set("ro.build.display.id", "griffin-user 6.0.1 MPL24.246-20 21 release-keys");
+
     if (ISMATCH(device_boot, "sheridan")) {
        // Do things?
     }
