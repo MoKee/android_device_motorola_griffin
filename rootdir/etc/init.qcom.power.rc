@@ -6,6 +6,9 @@ on boot
      write /dev/cpuset/system-background/cpus 0-3
      write /dev/cpuset/top-app/cpus 0-3
 
+     # Enable sched boost
+     write /proc/sys/kernel/sched_boost 1
+
 on enable-low-power
 
      # disable thermal bcl hotplug to switch governor
@@ -73,7 +76,6 @@ on enable-low-power
      write /proc/sys/kernel/sched_freq_dec_notify 400000
      write /proc/sys/kernel/sched_spill_nr_run 3
      write /proc/sys/kernel/sched_init_task_load 100 
-     # write /proc/sys/kernel/sched_migration_fixup 1
 
      # Enable bus-dcvs
      write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
@@ -147,6 +149,12 @@ service thermal-engine /system/vendor/bin/thermal-engine
    socket thermal-recv-client stream 0660 system system
    socket thermal-recv-passive-client stream 0666 system system
    group root
-   socket thermal-send-client stream 0666 system system
-   socket thermal-recv-client stream 0660 system system
-   socket thermal-recv-passive-client stream 0666 system system
+   writepid /dev/cpuset/system-background/tasks
+
+service iop /system/bin/iop
+   class main
+   user root
+   group root
+   disabled
+   socket iop seqpacket 0666 root system
+   writepid /dev/cpuset/system-background/tasks
