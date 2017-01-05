@@ -234,7 +234,6 @@ on boot
    chmod 0440 /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch
    chown system drmrpc /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch_enable
    chown system drmrpc /sys/devices/soc/75ba000.i2c/i2c-12/12-004a/secure_touch
-   write /proc/sys/kernel/sched_boost 1
    write /sys/devices/soc/75ba000.i2c/i2c-12/12-0020/input/input0/update_fw 1
 
    # Turn on GPU rate stats through gpu_gx_gfx3d_clk
@@ -407,23 +406,26 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
    class late_start
    user camera
    group camera system inet input graphics
+   writepid /dev/cpuset/system-background/tasks
 
 service fingerprintd /system/bin/fingerprintd
    class late_start
    user system
-   group system drmrpc
+   group input
+   writepid /dev/cpuset/system-background/tasks
 
 service per_mgr system/bin/pm-service
    class core
    user system
    group system
-   ioprio rt 4
+   writepid /dev/cpuset/system-background/tasks
 
 service per_proxy /system/bin/pm-proxy
    class core
    user system
    group system
    disabled
+   writepid /dev/cpuset/system-background/tasks
 
 service mdm_helper /system/bin/mdm_helper
    class core
@@ -433,6 +435,7 @@ service qseecomd /system/bin/qseecomd
    class core
    user root
    group root
+   writepid /dev/cpuset/system-background/tasks
 
 service qcomsysd /system/bin/qcom-system-daemon
    class main
@@ -465,6 +468,7 @@ service rmt_storage /system/bin/rmt_storage
 service tftp_server /system/bin/tftp_server
    class core
    user root
+   writepid /dev/cpuset/system-background/tasks
 
 service start_hci_filter /system/bin/wcnss_filter
    class late_start
@@ -483,6 +487,7 @@ service qmuxd /system/bin/qmuxd
    class core
    user root
    group radio audio bluetooth gps nfc diag qcom_diag
+   writepid /dev/cpuset/system-background/tasks
 
 service netmgrd /system/bin/netmgrd
    class main
@@ -497,11 +502,13 @@ service ipacm /system/bin/ipacm
    class main
    user net_admin
    group net_admin inet
+   writepid /dev/cpuset/system-background/tasks
 
 service qti /system/vendor/bin/qti
    class main
    user radio
    group radio net_raw qcom_diag usb net_admin
+   writepid /dev/cpuset/system-background/tasks
 
 service p2p_supplicant /system/bin/wpa_supplicant \
    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
@@ -561,6 +568,7 @@ service loc_launcher /system/bin/loc_launcher
    #loc_launcher will start as root and set its uid to gps
    class late_start
    group gps inet qcom_diag wifi
+   writepid /dev/cpuset/system-background/tasks
 
 service qcom-sh /system/bin/sh /init.qcom.sh
    class late_start
@@ -571,6 +579,7 @@ service sensor-sh /system/bin/sh /init.qcom.sensors.sh
    class core
    user root
    oneshot
+   writepid /dev/cpuset/system-background/tasks
 
 service atfwd /system/bin/ATFWD-daemon
    class late_start
@@ -589,16 +598,19 @@ service msm_irqbalance /system/bin/msm_irqbalance -f /system/vendor/etc/msm_irqb
    user root
    group root
    disabled
+   writepid /dev/cpuset/system-background/tasks
 
 service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
    class late_start
    user system
    group system
+   writepid /dev/cpuset/system-background/tasks
 
 service time_daemon /system/bin/time_daemon
    class late_start
    user root
    group root
+   writepid /dev/cpuset/system-background/tasks
 
 service adsprpcd /system/bin/adsprpcd
    class main
