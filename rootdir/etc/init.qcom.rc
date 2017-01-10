@@ -63,6 +63,7 @@ on init
 on early-boot
    # set RLIMIT_MEMLOCK to 64MB
    setrlimit 8 67108864 67108864
+
    # set aggressive read ahead during boot up.
    write /sys/block/dm-0/queue/read_ahead_kb 2048
    write /sys/kernel/boot_adsp/boot 1
