@@ -12,12 +12,12 @@
    "target_path": "device/qcom/common"
  },
  {
-   "repository": "android_external_greybus",
-   "target_path": "external/greybus"
+   "repository": "android_external_motorola_greybus",
+   "target_path": "external/motorola/greybus"
  },
  {
-   "repository": "android_external_v4l2_hal",
-   "target_path": "external/v4l2_hal"
+   "repository": "android_external_motorola_v4l2_hal",
+   "target_path": "external/motorola/v4l2_hal"
  },
  {
    "repository": "android_packages_resources_devicesettings",
