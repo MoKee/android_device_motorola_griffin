@@ -194,9 +194,9 @@ USE_SENSOR_MULTI_HAL := true
 # Enable peripheral manager
 TARGET_PER_MGR_ENABLED := true
 
-# CMHW
-BOARD_USES_CYANOGEN_HARDWARE := true
-BOARD_HARDWARE_CLASS += hardware/cyanogen/cmhw
+# MKHW
+BOARD_USES_MOKEE_HARDWARE := true
+BOARD_HARDWARE_CLASS += hardware/mokee/mkhw
 
 # Media
 TARGET_USES_MEDIA_EXTENSIONS := true
