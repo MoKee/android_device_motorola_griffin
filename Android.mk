@@ -33,25 +33,25 @@ include device/motorola/griffin/tftp.mk
 IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so
 IMS_SYMLINKS := $(addprefix $(TARGET_OUT_VENDOR_APPS)/ims/lib/arm64/,$(notdir $(IMS_LIBS)))
 $(IMS_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
-    @echo "IMS lib link: $@"
-    @mkdir -p $(dir $@)
-    @rm -rf $@
-    $(hide) ln -sf /system/vendor/lib64/$(notdir $@) $@
+	@echo "IMS lib link: $@"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf /system/vendor/lib64/$(notdir $@) $@
 
 ALL_DEFAULT_INSTALLED_MODULES += $(IMS_SYMLINKS)
 
 # Create links for audcal data files
 $(shell mkdir -p $(TARGET_OUT)/etc/firmware/wcd9320; \
-    ln -sf /data/misc/audio/wcd9320_anc.bin \
-        $(TARGET_OUT)/etc/firmware/wcd9320/wcd9320_anc.bin;\
-    ln -sf /data/misc/audio/mbhc.bin \
-        $(TARGET_OUT)/etc/firmware/wcd9320/wcd9320_mbhc.bin; \
-    ln -sf /data/misc/audio/wcd9320_mad_audio.bin \
-        $(TARGET_OUT)/etc/firmware/wcd9320/wcd9320_mad_audio.bin)
+	ln -sf /data/misc/audio/wcd9320_anc.bin \
+		$(TARGET_OUT)/etc/firmware/wcd9320/wcd9320_anc.bin;\
+	ln -sf /data/misc/audio/mbhc.bin \
+		$(TARGET_OUT)/etc/firmware/wcd9320/wcd9320_mbhc.bin; \
+	ln -sf /data/misc/audio/wcd9320_mad_audio.bin \
+		$(TARGET_OUT)/etc/firmware/wcd9320/wcd9320_mad_audio.bin)
 
 $(shell mkdir -p $(TARGET_OUT_ETC)/firmware; \
-    ln -sf /dev/block/bootdevice/by-name/msadp \
-        $(TARGET_OUT_ETC)/firmware/msadp)
+	ln -sf /dev/block/bootdevice/by-name/msadp \
+		$(TARGET_OUT_ETC)/firmware/msadp)
 
 include $(CLEAR_VARS)
 
@@ -70,15 +70,15 @@ $(LOCAL_BUILT_MODULE): WCNSS_MAC_SYMLINK := $(TARGET_OUT)/etc/firmware/wlan/qca_
 
 $(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/Android.mk
 $(LOCAL_BUILT_MODULE):
-    $(hide) echo "Making symlinks for wifi"
-    $(hide) mkdir -p $(dir $@)
-    $(hide) mkdir -p $(dir $(WCNSS_INI_SYMLINK))
-    $(hide) rm -rf $@
-    $(hide) rm -rf $(WCNSS_INI_SYMLINK)
-    $(hide) ln -sf $(ACTUAL_INI_FILE) $(WCNSS_INI_SYMLINK)
-    $(hide) rm -rf $(WCNSS_MAC_SYMLINK)
-    $(hide) ln -sf $(ACTUAL_MAC_FILE) $(WCNSS_MAC_SYMLINK)
-    $(hide) touch $@
+	$(hide) echo "Making symlinks for wifi"
+	$(hide) mkdir -p $(dir $@)
+	$(hide) mkdir -p $(dir $(WCNSS_INI_SYMLINK))
+	$(hide) rm -rf $@
+	$(hide) rm -rf $(WCNSS_INI_SYMLINK)
+	$(hide) ln -sf $(ACTUAL_INI_FILE) $(WCNSS_INI_SYMLINK)
+	$(hide) rm -rf $(WCNSS_MAC_SYMLINK)
+	$(hide) ln -sf $(ACTUAL_MAC_FILE) $(WCNSS_MAC_SYMLINK)
+	$(hide) touch $@
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
