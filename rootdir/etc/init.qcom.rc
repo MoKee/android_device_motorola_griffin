@@ -75,6 +75,10 @@ on init
     #ESDFS
     chown mot_esdfs root /proc/fs/esdfs/packages
 
+    # ZRAM
+    write /sys/block/zram0/comp_algorithm "lz4"
+    write /proc/sys/vm/swappiness 100
+
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
@@ -356,6 +360,7 @@ on boot
 on fs
     wait /dev/block/bootdevice
     mount_all fstab.qcom
+    swapon_all fstab.qcom
 
     # Keeping following partitions outside fstab file. As user may not have
     # these partition flashed on the device. Failure to mount any partition in fstab file
@@ -418,10 +423,6 @@ on post-fs
     chmod 0660 /persist/wifi/wlan_mac.bin
     chown mot_tcmd mot_tcmd /persist/bt/bt_bdaddr
     chmod 0664 /persist/bt/bt_bdaddr
-
-    #swapon_all fstab.qcom
-    #write /proc/sys/vm/page-cluster 0
-    #write /proc/sys/vm/swappiness 100
 
 # msm specific files that need to be created on /data
 on post-fs-data
@@ -1075,7 +1076,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     -I/system/etc/wifi/p2p_supplicant_overlay.conf -N \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 -dd \
+    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
@@ -1089,7 +1090,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
 service wpa_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -dd \
+    -O/data/misc/wifi/sockets \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
@@ -1103,7 +1104,7 @@ service wpa_supplicant /system/bin/wpa_supplicant \
 service wigig_supplicant /system/bin/wpa_supplicant \
     -iwigig0 -Dnl80211 -c/data/misc/wifi/wigig_supplicant.conf \
     -m/data/misc/wifi/wigig_p2p_supplicant.conf \
-    -O/data/misc/wifi/wigig_sockets -dd \
+    -O/data/misc/wifi/wigig_sockets \
     -e/data/misc/wifi/wigig_entropy.bin -g@android:wpa_wigig0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
