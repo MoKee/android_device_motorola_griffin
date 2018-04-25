@@ -8,7 +8,7 @@
 /(vendor|system/vendor)/bin/batt_health                  u:object_r:batt_health_exec:s0
 /(vendor|system/vendor)/bin/mods_camd                    u:object_r:mods_camd_exec:s0
 
-# LineageActions
+# MoKeeActions
 /sys/homebutton/enable                                    u:object_r:sysfs_homebutton:s0
 /sys/homebutton/enable_wakeup                             u:object_r:sysfs_homebutton:s0
 /sys/homebutton/key                                       u:object_r:sysfs_homebutton:s0

@@ -132,9 +132,9 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
     android.hardware.bluetooth@1.0-service
 
-# LineageActions
+# MoKeeActions
 PRODUCT_PACKAGES += \
-    LineageActions
+    MoKeeActions
 
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
@@ -252,7 +252,7 @@ PRODUCT_PACKAGES += \
 
 # LiveDisplay native
 PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@1.0-service-sdm
+    vendor.mokee.livedisplay@1.0-service-sdm
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
@@ -384,7 +384,7 @@ PRODUCT_PACKAGES += \
 
 # Vibrator
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-service.lineage
+    android.hardware.vibrator@1.0-service.mokee
 
 # VR
 PRODUCT_PACKAGES += \
