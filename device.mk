@@ -245,9 +245,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     $(LOCAL_PATH)/configs/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
-    $(LOCAL_PATH)/configs/media_profiles_vendor.xml:system/etc/media_profiles.xml \
-    $(LOCAL_PATH)/configs/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml \
-    $(LOCAL_PATH)/configs/media_profiles_vendor.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml \
     $(LOCAL_PATH)/configs/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml \
     $(LOCAL_PATH)/configs/media_profiles_mod0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_mod0.xml \
     $(LOCAL_PATH)/configs/media_profiles_mod1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_mod1.xml
@@ -257,9 +254,9 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
 
-# Mods
-PRODUCT_PACKAGES += \
-    ModPermsFix
+# ModService
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/whitelist_modservice.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/whitelist_modservice.xml
 
 # Net
 PRODUCT_PACKAGES += \
