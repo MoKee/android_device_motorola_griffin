@@ -60,8 +60,8 @@ ENABLE_CPUSETS := true
 # Crypto
 TARGET_HW_DISK_ENCRYPTION := true
 
-# Lineage hardware
-JAVA_SOURCE_OVERLAYS := org.lineageos.hardware|$(PLATFORM_PATH)/lineagehw|**/*.java
+# MK hardware
+JAVA_SOURCE_OVERLAYS := org.mokee.hardware|$(PLATFORM_PATH)/mkhw|**/*.java
 
 # Partitions
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
