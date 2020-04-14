@@ -5,7 +5,7 @@
 /(vendor|system/vendor)/bin/qmi_motext_hook              u:object_r:rild_exec:s0
 /(vendor|system/vendor)/bin/wlan_carrier_bin\.sh         u:object_r:init_wifi_exec:s0
 
-# LineageActions
+# MoKeeActions
 /sys/homebutton/enable                                    u:object_r:sysfs_homebutton:s0
 /sys/homebutton/enable_wakeup                             u:object_r:sysfs_homebutton:s0
 /sys/homebutton/key                                       u:object_r:sysfs_homebutton:s0
