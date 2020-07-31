@@ -58,7 +58,7 @@ public class MoKeeActionsService extends IntentService implements ScreenStateNot
                         new LinkedList<UpdatedStateNotifier>();
 
     public MoKeeActionsService(Context context) {
-        super("LineageActionService");
+        super("MoKeeActionService");
         mContext = context;
 
         Log.d(TAG, "Starting");
